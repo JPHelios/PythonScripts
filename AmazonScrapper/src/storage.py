@@ -55,15 +55,18 @@ def choose():
 
 ##########################################################################################
 
-def display():
+def display(urls, descriptions):
 
     #Print the data from the data file in cli
 
     for i in range(0, len(urls)):
-        print("...............................")
+        print("-------------------------------")
+        print(f"Produkt: {descriptions[i]}\n")
         print(urls[i])
+        
 
-    print("...............................")
+    print("-------------------------------")
+    
     handshake()
 
 ##########################################################################################
@@ -116,14 +119,19 @@ def handshake():
 
 while True:
 
-    urls = pickle.load(open("data.txt", "rb"))
+    try:
+        urls = pickle.load(open("data.txt", "rb"))
+        descriptions = pickle.load(open("description.txt", "rb"))
+    except EOFError:
+        print('no data yet')
+    
 
     print_overview() 
     action = choose()
 
     os.system("cls") 
 
-    if action == 1: display()
+    if action == 1: display(urls, descriptions)
     elif action == 2: add_url(urls)
     elif action == 3: delete_url(urls)
     elif action == 4: break
