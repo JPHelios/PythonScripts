@@ -3,9 +3,7 @@ import os.path
 def continue_func():
     input_action= input('Do you want to continue? (y/n): ')
     
-    if input_action == 'y': 
-        #exec(open('src/storage.py').read())
-        os.system('python src/storage.py')
+    if input_action == 'y': os.system('python src/storage.py')
     else: quit()
 
 

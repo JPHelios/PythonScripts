@@ -2,9 +2,9 @@ import pickle
 import os
 import msvcrt
 
-##################################################################################
+##########################################################################################
 #FUNCTIONS
-##################################################################################
+##########################################################################################
 
 def print_overview():
 
@@ -30,7 +30,7 @@ def print_overview():
     #     print(f"+  {i+1}: {options[i]}")
     # print(divider)
 
-##################################################################################
+##########################################################################################
 
 def choose():
 
@@ -53,7 +53,7 @@ def choose():
 
     return action
 
-##################################################################################
+##########################################################################################
 
 def display():
 
@@ -66,7 +66,7 @@ def display():
     print("...............................")
     handshake()
 
-##################################################################################
+##########################################################################################
 
 def add_url(urls):
 
@@ -81,20 +81,28 @@ def add_url(urls):
 
     handshake()
 
-##################################################################################
+##########################################################################################
 
 def delete_url(urls):
 
     #Delete a URL from the data file
-    index = int(input("Please insert an index value: "))
-    urls.pop(index-1)
+    index = input("Please insert an index value: ")
 
-    pickle.dump(urls, open("data.txt", "wb"))
-    print(" ")
-    print("Item successfully deleted")
+    try:
+        index = int(index)
+        urls.pop(index-1)
+        pickle.dump(urls, open("data.txt", "wb"))
+        print(" ")
+        print("Item successfully deleted")
+    except ValueError:
+        print("You entered an invalid option")
+    except IndexError:
+        print("You entered an invalid index number")
+
     handshake()
 
 ##########################################################################################
+
 def handshake():
     print(" ")
     print("Press any key to continue...")
