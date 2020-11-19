@@ -38,24 +38,4 @@ if data_bool == True or description_bool == True:
 pickle.dump(url, open("data.txt", "wb"))
 pickle.dump(name, open("description.txt", "wb"))
 
-
-
-    # while True:
-    #     url = []
-    #     name = []
-        
-    #     url.append(input("Please provide the url: "))
-    #     name.append(input("please provide a descriptive name: "))
-
-    #     pickle.dump([url], open("data.txt", "wb"))
-    #     pickle.dump([name], open("description.txt", "wb"))
-
-    #     print('Entry was written successfully')
-    #     again = input('Do you want to enter another dataset? (y/n): ')
-
-    #     if again == "n": break
-
 os.system('python src/storage.py')
-# input_action= input('Do you want to continue? (y/n): ')
-# if input_action == 'y': os.system('python src/storage.py')
-# else: quit()

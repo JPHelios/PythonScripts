@@ -1,24 +1,17 @@
 import requests
-from bs4 import BeautifulSoup
-
 import array
-
 import sys
 import smtplib
 import email
 import re
+import pickle
+
+from bs4 import BeautifulSoup
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-array_URL = [
-    "https://www.amazon.de/Kingston-HyperX-Cloud-Gaming-Kopfh%C3%B6rer/dp/B00SAYCXWG/ref=sr_1_1?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=E6E7D45G1DUV&dchild=1&keywords=hyper+cloud+x+ii&qid=1605177249&sprefix=hyper+cloud%2Caps%2C380&sr=8-1",
-    "https://www.amazon.de/ALED-LIGHT-Wasserdichtes-Kontrolliertes-Lichtschl%C3%A4uche/dp/B0781MCM5Z/ref=sr_1_6?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=Bluetooth+LED+Streifen&qid=1605254811&sr=8-6"
-]
-
-#URL = 'https://www.amazon.de/Kingston-HyperX-Cloud-Gaming-Kopfh%C3%B6rer/dp/B00SAYCXWG/ref=sr_1_1?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=E6E7D45G1DUV&dchild=1&keywords=hyper+cloud+x+ii&qid=1605177249&sprefix=hyper+cloud%2Caps%2C380&sr=8-1'
-
-headers = {
-    "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36 Edg/86.0.622.63'}
+array_URL = pickle.load(open("data.txt", "rb"))
+headers = {"User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36 Edg/86.0.622.63'}
 
 
 def check_price(URL):
@@ -28,22 +21,23 @@ def check_price(URL):
 
     title = soup.find(id="productTitle").get_text().strip()
     price = soup.find(id="priceblock_ourprice").get_text().strip()
+    saving = soup.find(id="regularprice_savings").get_text().strip()
 
-    converted_price = float(price[0:2])
+    saving = saving.replace('Sie sparen:', '').strip()
+    saving = int(saving[-4:-2])
+    
+    print(f"Sie sparen so viel %: {saving}")
 
-    print(title)
-    print(converted_price)
+    price = price.replace('\xa0€', '')
+    price = price.replace(',', ".")
+    converted_price = float(price)
 
     if(converted_price < 100):
         send_mail(title, price, URL)
 
 def send_mail(title, price, URL):
 
-    print('Die Daten sind angekommen für: ' + title)
-    print(price)
-    print(URL)
-
-    msg = MIMEText("Das Produkt auf deiner Liste ist im Angebot: \n\n" + title + "\n\n Prüfe auf Amazon nach, indem du diesem Link folgst: \n" + URL)
+    msg = MIMEText("Das Produkt auf deiner Liste ist im Angebot: \n\n" + title + "\n\nPreis: " + price +"€"+ "\n\n Prüfe auf Amazon nach, indem du diesem Link folgst: \n" + URL)
 
     msg['Subject'] = 'Ein Produkt ist im Angebot!'
     msg['From'] = 'jojo.peters01@googlemail.com'
