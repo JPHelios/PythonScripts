@@ -26,3 +26,9 @@ print(test)
 
 test =int(test)
 print(test)
+
+spartext = gesamt
+spartext = spartext[:-7:].strip()
+
+
+print(f"Das ist ein Test: {spartext}")

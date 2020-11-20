@@ -71,22 +71,28 @@ def display(urls, descriptions):
 
 ##########################################################################################
 
-def add_url(urls):
+def add_url(urls, description):
 
     #Add an URL the data file
     new_url = input("Please add the link here: ")
-    
     urls.append(new_url)
     print("...")
     print("Entry successfully written")
 
     pickle.dump(urls, open("data.txt", "wb"))
 
+    name = input("Please add a name here: ")
+    descriptions.append(name)
+    print("...")
+    print("Entry successfully written")
+
+    pickle.dump(descriptions, open("description.txt", "wb"))
+
     handshake()
 
 ##########################################################################################
 
-def delete_url(urls):
+def delete_url(urls, descriptions):
 
     #Delete a URL from the data file
     index = input("Please insert an index value: ")
@@ -94,7 +100,9 @@ def delete_url(urls):
     try:
         index = int(index)
         urls.pop(index-1)
+        descriptions.pop(index-1)
         pickle.dump(urls, open("data.txt", "wb"))
+        pickle.dump(descriptions, open("description.txt", "wb"))
         print(" ")
         print("Item successfully deleted")
     except ValueError:
@@ -132,8 +140,8 @@ while True:
     os.system("cls") 
 
     if action == 1: display(urls, descriptions)
-    elif action == 2: add_url(urls)
-    elif action == 3: delete_url(urls)
+    elif action == 2: add_url(urls, descriptions)
+    elif action == 3: delete_url(urls, descriptions)
     elif action == 4: break
 
 
